@@ -35,12 +35,12 @@ export default function AboutSection() {
   const skillCategories = [
     {
       title: "Frontend Development",
-      skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Three.js"],
+      skills: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
       icon: "🎨",
     },
     {
       title: "Backend & Infrastructure",
-      skills: ["Node.js", "PostgreSQL", "Prisma", "AWS", "Docker", "CI/CD"],
+      skills: ["Node.js","MongoDB", "Express", "PostgreSQL", "Prisma", "AWS", "Docker", "CI/CD"],
       icon: "⚙️",
     },
     {
