@@ -1,143 +1,226 @@
-// components/portfolio/Hero.tsx
 "use client";
 
-import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
 import icon from "../../../public/icon.jpg";
+import { memo } from "react";
+import { Variants } from "framer-motion";
 
 type Props = {
   skills: string[];
 };
 
+// Memoize skill item to prevent unnecessary re-renders
+const SkillItem = memo(({ skill, index }: { skill: string; index: number }) => (
+  <motion.div
+    className="px-4 py-2 bg-white/5 border border-white/10 rounded-md text-sm text-gray-400 hover:border-orange-500/50 hover:text-orange-500 transition-all duration-300"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: 0.5 + index * 0.05 }}
+    whileHover={{ scale: 1.05, y: -2 }}
+    data-cursor-hover="true"
+  >
+    {skill}
+  </motion.div>
+));
+
+SkillItem.displayName = "SkillItem";
+
 export default function Hero({ skills }: Props) {
-  const codeWindowRef = useRef<HTMLDivElement>(null);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3
+      }
+    }
+  };
 
-  useEffect(() => {
-    // Parallax effect
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!codeWindowRef.current) return;
-      const mouseX = e.clientX / window.innerWidth - 0.5;
-      const mouseY = e.clientY / window.innerHeight - 0.5;
-      
-      codeWindowRef.current.style.transform = 
-        `translate(-50%, -50%) translate(${mouseX * -10}px, ${mouseY * -10}px)`;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.42, 0, 0.58, 1]
+      }
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6">
-      <div className="max-w-7xl w-full grid lg:grid-cols-2 gap-12 items-center">
+    <motion.div 
+      className="min-h-screen flex items-center justify-center px-6"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      <div className="max-w-7xl py-20 w-full grid lg:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
-        <div className="animate-fadeInLeft">
-          {/* Status Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500/10 border border-orange-500/30 rounded-full mb-8">
-            <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
-            <span className="text-orange-500 text-sm font-semibold">Available for opportunities</span>
-          </div>
-
+        <div>
           {/* Title */}
-          <h1 className="text-6xl lg:text-7xl font-black mb-6 leading-tight">
-            I Build <span className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent">AI-Powered</span><br />
+          <motion.h1 
+            className="text-6xl lg:text-7xl font-black mb-6 leading-tight"
+            variants={itemVariants}
+          >
+            I Build{" "}
+            <motion.span 
+              className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent inline-block"
+              animate={{ 
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
+              }}
+              transition={{ 
+                duration: 5, 
+                repeat: Infinity, 
+                ease: "linear" 
+              }}
+              style={{ 
+                backgroundSize: "200% auto",
+                backgroundImage: "linear-gradient(90deg, #f97316, #ef4444, #ec4899, #f97316)"
+              }}
+            >
+              AI-Powered
+            </motion.span>
+            <br />
             Products End-to-End
-          </h1>
+          </motion.h1>
 
           {/* Subtitle */}
-          <p className="text-2xl text-gray-400 mb-6">
-            Full-Stack Developer • AWS Certified • System Architect
-          </p>
+          <motion.p 
+            className="text-2xl text-gray-400 mb-6"
+            variants={itemVariants}
+          >
+            Full-Stack Developer • AWS Certified 
+          </motion.p>
 
           {/* Description */}
-          <p className="text-gray-500 text-lg mb-8 leading-relaxed">
-            Frontend in Next.js/React with clean UX, backend in Node/TypeScript, 
-            data in Postgres/Prisma, and deployments on AWS with CI/CD and observability. 
-            My current focus is agentic systems—tool-using, retrieval-augmented, 
-            and action-oriented agents that solve real problems.{" "}
+          <motion.p 
+            className="text-gray-500 text-lg mb-8 leading-relaxed"
+            variants={itemVariants}
+          >
+            Next.js/React (TSX/JSX), Tailwind CSS, Node/Express; data on 
+            MongoDB & Postgres (Prisma/Supabase); auth with JWT/OAuth2; 
+            production on AWS with Docker & CI/CD.{" "}
             <a 
               href="https://cp.certmetrics.com/amazon/en/public/verify/credential/bc913f49d39c4a55a2f5788e8c04b73f" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-orange-500 font-semibold hover:underline"
+              className="text-orange-500 font-semibold z-15 hover:underline"
+              data-cursor-hover="true"
             >
               AWS Certified Cloud Practitioner
             </a>
-          </p>
+          </motion.p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-wrap gap-4 mb-10">
-            <a 
+          <motion.div 
+            className="flex flex-wrap gap-4 mb-10"
+            variants={itemVariants}
+          >
+            <motion.a 
               href="#projects" 
-              className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg font-semibold hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300 hover:-translate-y-1"
+              className="px-8 py-4 z-15 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg font-semibold hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              data-cursor-hover="true"
             >
               View Projects →
-            </a>
-            <a 
+            </motion.a>
+            <motion.a 
               href="https://drive.google.com/file/d/16MRjxxRTYggAug_oFUkcigvlUC5B0whE/view?usp=sharing" 
               target="_blank"
-              className="px-8 py-4 border border-gray-700 rounded-lg font-semibold hover:bg-white/5 transition-all duration-300"
+              className="px-8 py-4 z-15 border border-gray-700 rounded-lg font-semibold hover:bg-white/5 transition-all duration-300"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              data-cursor-hover="true"
             >
-              Download Resume
-            </a>
-          </div>
+              Resume
+            </motion.a>
+          </motion.div>
 
           {/* Tech Stack */}
           <div className="flex flex-wrap gap-2">
             {skills.map((skill, i) => (
-              <div
-                key={i}
-                className="px-4 py-2 bg-white/5 border border-white/10 rounded-md text-sm text-gray-400 hover:border-orange-500/50 hover:text-orange-500 transition-all duration-300 cursor-pointer"
-              >
-                {skill}
-              </div>
+              <SkillItem key={skill} skill={skill} index={i} />
             ))}
           </div>
         </div>
 
         {/* Right Visual */}
-        <div className="relative animate-fadeInRight hidden lg:block">
+        <motion.div 
+          className="relative hidden lg:block"
+          variants={itemVariants}
+        >
           {/* Morphing Gradient Orb */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-orange-500/30 to-red-500/20 rounded-full blur-3xl animate-morph" />
+          <motion.div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-orange-500/30 to-red-500/20 rounded-full blur-3xl will-change-transform"
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 180, 360],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
           
           {/* Code Window */}
-          <div 
-            ref={codeWindowRef}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] bg-gray-900/90 backdrop-blur border border-gray-800 rounded-xl overflow-hidden shadow-2xl"
+          <motion.div 
+            className="relative bg-gray-900/90 backdrop-blur border border-gray-800 rounded-xl overflow-hidden shadow-2xl p-6"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            whileHover={{ scale: 1.02 }}
           >
-            {/* Window Header */}
-            <div className="flex items-center gap-2 px-4 py-3 bg-gray-800/50 border-b border-gray-700">
+            {/* Terminal Header */}
+            <div className="flex items-center gap-2 mb-4">
               <div className="w-3 h-3 rounded-full bg-red-500" />
               <div className="w-3 h-3 rounded-full bg-yellow-500" />
               <div className="w-3 h-3 rounded-full bg-green-500" />
+              <span className="ml-3 text-gray-500 text-sm">terminal</span>
             </div>
             
             {/* Code Content */}
-            <div className="p-6 font-mono text-sm">
-              <div className="text-orange-500">const</div>
-              <div className="text-blue-400 ml-4">{"buildProduct = () => {"}</div>
-              <div className="ml-8">
-                <span className="text-purple-400">return</span> {"{"}
+            <div className="font-mono text-sm">
+              <div className="text-green-400">$ npm run dev</div>
+              <div className="text-gray-400 mt-2">
+                <span className="text-blue-400">▲ Next.js 15.5.4</span>
+                <br />
+                <span className="text-gray-500">- Local: </span>
+                <span className="text-cyan-400">http://localhost:3000</span>
+                <br />
+                <span className="text-gray-500">- Network: </span>
+                <span className="text-cyan-400">http://192.168.1.1:3000</span>
               </div>
-              <div className="ml-12 text-gray-400">
-                <div>frontend: <span className="text-green-400">'Next.js'</span>,</div>
-                <div>backend: <span className="text-green-400">'Node.js'</span>,</div>
-                <div>database: <span className="text-green-400">'PostgreSQL'</span>,</div>
-                <div>ai: <span className="text-green-400">'LangChain'</span>,</div>
-                <div>cloud: <span className="text-green-400">'AWS'</span></div>
+              <div className="text-green-400 mt-3">✓ Ready in 2s</div>
+              <div className="text-gray-400 mt-2">
+                <span className="text-yellow-400">○ </span>
+                <span>Compiling /portfolio...</span>
               </div>
-              <div className="ml-8">{"}"}</div>
-              <div className="text-blue-400 ml-4">{"}"}</div>
+              <div className="text-green-400">✓ Compiled successfully</div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Profile Image (optional) */}
-          <div className="absolute top-10 right-10 w-32 h-32 rounded-full overflow-hidden border-4 border-orange-500/20">
-            <Image src={icon} alt="Profile" className="w-full h-full object-cover" />
-          </div>
-        </div>
+          {/* Profile Image */}
+          <motion.div 
+            className="absolute top-10 right-10 w-32 h-32 rounded-full overflow-hidden border-4 border-orange-500/20"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.7, duration: 0.5, type: "spring" }}
+            whileHover={{ scale: 1.1 }}
+          >
+            <Image 
+              src={icon} 
+              alt="Profile" 
+              className="w-full h-full object-cover"
+              priority
+            />
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

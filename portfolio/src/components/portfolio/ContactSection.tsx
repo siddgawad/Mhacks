@@ -1,10 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
 export default function ContactSection() {
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-
   const contactMethods = [
     {
       icon: (
@@ -65,14 +61,14 @@ export default function ContactSection() {
           <span className="text-orange-500 font-semibold text-sm tracking-wider">GET IN TOUCH</span>
           
           <h2 className="text-5xl md:text-6xl font-bold mt-2 mb-6">
-            Let's Build Something{" "}
+            Let us Build Something{" "}
             <span className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent">
               Amazing
             </span>
           </h2>
           
           <p className="text-gray-400 text-xl max-w-2xl mx-auto">
-            I'm always interested in hearing about new projects and opportunities. 
+            I am always interested in hearing about new projects and opportunities. 
             Whether you have a question or just want to say hi, feel free to reach out!
           </p>
         </div>
@@ -85,8 +81,6 @@ export default function ContactSection() {
               href={method.href}
               target="_blank"
               rel="noopener noreferrer"
-              onMouseEnter={() => setHoveredCard(index)}
-              onMouseLeave={() => setHoveredCard(null)}
               className="relative group"
             >
               <div className="relative p-6 bg-gray-900/50 backdrop-blur border border-gray-800 rounded-xl hover:border-orange-500/50 transition-all duration-300 hover:-translate-y-2 overflow-hidden">
@@ -130,24 +124,7 @@ export default function ContactSection() {
           </a>
         </div>
 
-        {/* Footer */}
-        <div className="mt-20 pt-8 border-t border-gray-800 text-center">
-          <p className="text-gray-500 mb-4">
-            © 2024 Siddhant Gawad. Built with passion and code.
-          </p>
-          
-          <div className="flex justify-center gap-6">
-            <a href="https://drive.google.com/file/d/16MRjxxRTYggAug_oFUkcigvlUC5B0whE/view?usp=sharing" target="_blank" className="text-gray-500 hover:text-orange-500 transition-colors">
-              Resume
-            </a>
-            <a href="https://x.com/XforSid" target="_blank" className="text-gray-500 hover:text-orange-500 transition-colors">
-              Twitter
-            </a>
-            <a href="https://cp.certmetrics.com/amazon/en/public/verify/credential/bc913f49d39c4a55a2f5788e8c04b73f" target="_blank" className="text-gray-500 hover:text-orange-500 transition-colors">
-              AWS Certification
-            </a>
-          </div>
-        </div>
+      
       </div>
 
       {/* Background Animation */}

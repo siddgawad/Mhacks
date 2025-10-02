@@ -1,78 +1,67 @@
-// components/portfolio/ParticleBackground.tsx
 "use client";
 
-import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { useMemo, useState, useEffect } from "react";
 
 export default function ParticleBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [windowHeight, setWindowHeight] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    // Set mounted state
+    setIsMounted(true);
+    
+    // Only access window in the browser
+    if (typeof window !== 'undefined') {
+      setWindowHeight(window.innerHeight);
+      
+      const handleResize = () => {
+        setWindowHeight(window.innerHeight);
+      };
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particles: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      size: number;
-    }> = [];
-
-    // Create particles
-    for (let i = 0; i < 50; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: Math.random() * 0.5 + 0.1,
-        size: Math.random() * 2 + 1
-      });
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
     }
-
-    function animate() {
-      if (!ctx || !canvas) return;
-      
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      particles.forEach(particle => {
-        particle.x += particle.vx;
-        particle.y -= particle.vy;
-        
-        if (particle.y < 0) {
-          particle.y = canvas.height;
-          particle.x = Math.random() * canvas.width;
-        }
-        
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(251, 146, 60, 0.5)';
-        ctx.fill();
-      });
-      
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const particles = useMemo(() => {
+    return Array.from({ length: 30 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 4 + 2,
+      duration: Math.random() * 20 + 20,
+      delay: Math.random() * 5
+    }));
+  }, []);
+
+  // Don't render particles until we have window dimensions and component is mounted
+  if (!isMounted || !windowHeight) return null;
+
   return (
-    <canvas 
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
-    />
+    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      {particles.map((particle) => (
+        <motion.div
+          key={particle.id}
+          className="absolute bg-orange-500/20 rounded-full"
+          style={{
+            width: particle.size,
+            height: particle.size,
+            left: `${particle.x}%`,
+            top: `${particle.y}%`,
+          }}
+          animate={{
+            y: [0, -windowHeight],
+            opacity: [0, 1, 1, 0],
+          }}
+          transition={{
+            duration: particle.duration,
+            delay: particle.delay,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      ))}
+    </div>
   );
 }
