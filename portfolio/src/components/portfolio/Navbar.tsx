@@ -30,7 +30,7 @@ export default function Navbar() {
     { href: "https://www.linkedin.com/in/siddhantgawad/", icon: Linkedin, label: "LinkedIn" },
     { href: "https://www.instagram.com/siddhantgawaddd/", icon: Instagram, label: "Instagram" },
     { href: "mailto:gawad.developer@gmail.com", icon: Mail, label: "Email" },
-    { href: "https://drive.google.com/file/d/16MRjxxRTYggAug_oFUkcigvlUC5B0whE/view?usp=sharing", icon: FileText, label: "Resume" },
+    { href: " https://drive.google.com/file/d/1TwF5nQtrzLwzeCvkTrbXtEqbGr3NAKE_/view?usp=sharing", icon: FileText, label: "Resume" },
   ];
 
   return (
