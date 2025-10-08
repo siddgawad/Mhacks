@@ -129,7 +129,7 @@ export default function Hero({ skills }: Props) {
               View Projects →
             </motion.a>
             <motion.a 
-              href="https://drive.google.com/file/d/16MRjxxRTYggAug_oFUkcigvlUC5B0whE/view?usp=sharing" 
+              href="https://drive.google.com/file/d/1TwF5nQtrzLwzeCvkTrbXtEqbGr3NAKE_/view?usp=sharing" 
               target="_blank"
               className="px-8 py-4 z-15 border border-gray-700 rounded-lg font-semibold hover:bg-white/5 transition-all duration-300"
               whileHover={{ scale: 1.05, y: -2 }}
